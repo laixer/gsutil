@@ -20,6 +20,7 @@ currently httplib2.
 import collections
 import httplib
 import logging
+import random
 import socket
 import time
 import urlparse
@@ -201,7 +202,7 @@ def HandleExceptionsAndRebuildHttpConnections(retry_args):
   RebuildHttpConnections(retry_args.http)
   logging.error('Retrying request to url %s after exception %s',
                 retry_args.http_request.url, retry_args.exc)
-  time.sleep(retry_after or 2 ** retry_args.num_retries)
+  time.sleep(retry_after or CalculateWaitForRetry(retry_args.num_retries))
 
 
 def MakeRequest(http, http_request, retries=7, redirections=5,
@@ -280,3 +281,21 @@ def _MakeRequestNoRetry(http, http_request, redirections=5,
 
 def GetHttp():
   return httplib2.Http()
+
+def CalculateWaitForRetry(retry_attempt, maximum_wait=60):
+    """Calculates amount of time to wait before a retry attempt.
+
+    Wait time grows exponentially with the number of attempts.
+    A random amount of jitter is added to spread out retry attempts from different clients.
+
+    Args:
+      retry_attempt: Retry attempt counter.
+      maximum_wait: Upper bound for wait time.
+
+    Returns:
+      Amount of time to wait before retrying request.
+    """
+
+    wait_time = 2 ** retry_attempt
+    max_jitter = (2 ** retry_attempt) / 2
+    return min(wait_time + random.randrange(-max_jitter, max_jitter), maximum_wait)
