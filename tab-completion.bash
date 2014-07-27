@@ -1,3 +1,9 @@
+#
+# Works better if ":" is removed from word breaking characters in bash completition as colons appear in GS URLs.
+#
+# COMP_WORDBREAKS=${COMP_WORDBREAKS//:}
+#
+
 _gsutil_completer()
 {
     local cur cword
