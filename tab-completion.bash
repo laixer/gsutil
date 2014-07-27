@@ -6,7 +6,7 @@ _gsutil_completer()
     if [[ $cword -eq 1 ]]; then
         COMPREPLY=($(gsutil help | sed /Additional/q | grep '^  ' | sed -e 's/^  //' -e 's/ .*//'))
     elif [[ "$cur" =~ ^gs://.* ]]; then
-        COMPREPLY=($(gsutil ls ${cur}*))
+        COMPREPLY=($(gsutil ls ${cur}* 2>/dev/null))
     else
         COMPREPLY=($(compgen -A file ${cur}))
     fi
