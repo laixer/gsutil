@@ -23,6 +23,7 @@
 from gslib import util
 import gslib.tests.testcase as testcase
 from gslib.util import CompareVersions
+from gslib.util import CalculateWaitForRetry
 
 
 class TestUtil(testcase.GsUtilUnitTestCase):
@@ -67,6 +68,16 @@ class TestUtil(testcase.GsUtilUnitTestCase):
     self.assertEqual(util.HumanReadableToBytes('1T'), 1024 ** 4)
     self.assertEqual(util.HumanReadableToBytes('1\t   pb'), 1024 ** 5)
     self.assertEqual(util.HumanReadableToBytes('1e'), 1024 ** 6)
+
+  def test_CalculateWaitForRetry(self):
+    """Tests calculation of wait time for retry attempts."""
+    self.assertTrue(CalculateWaitForRetry(1) in range(1, 4))
+    self.assertTrue(CalculateWaitForRetry(2) in range(2, 7))
+    self.assertTrue(CalculateWaitForRetry(3) in range(4, 13))
+    self.assertTrue(CalculateWaitForRetry(4) in range(8, 25))
+    self.assertTrue(CalculateWaitForRetry(5) in range(16, 49))
+
+    self.assertTrue(CalculateWaitForRetry(5, maximum_wait=10) == 10)
 
   def test_CompareVersions(self):
     """Tests CompareVersions for various use cases."""
