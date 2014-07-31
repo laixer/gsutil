@@ -22,8 +22,8 @@
 
 from gslib import util
 import gslib.tests.testcase as testcase
-from gslib.util import CompareVersions
 from gslib.util import CalculateWaitForRetry
+from gslib.util import CompareVersions
 
 
 class TestUtil(testcase.GsUtilUnitTestCase):
@@ -77,7 +77,7 @@ class TestUtil(testcase.GsUtilUnitTestCase):
     self.assertTrue(CalculateWaitForRetry(4) in range(8, 25))
     self.assertTrue(CalculateWaitForRetry(5) in range(16, 49))
 
-    self.assertTrue(CalculateWaitForRetry(5, maximum_wait=10) == 10)
+    self.assertTrue(CalculateWaitForRetry(5, max_wait=10) == 10)
 
   def test_CompareVersions(self):
     """Tests CompareVersions for various use cases."""
