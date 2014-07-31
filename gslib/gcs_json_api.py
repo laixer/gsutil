@@ -64,6 +64,7 @@ from gslib.util import GetCredentialStoreFilename
 from gslib.util import GetMaxRetryDelay
 from gslib.util import GetNewHttp
 from gslib.util import GetNumRetries
+from gslib.util import CalculateWaitForRetry
 
 
 # Implementation supports only 'gs' URLs, so provider is unused.
@@ -598,7 +599,7 @@ class GcsJsonApi(CloudApi):
           raise ResumableDownloadException(
               'Transfer failed after %d retries. Final exception: %s' %
               self.num_retries, str(e))
-        time.sleep(apitools_http_wrapper.CalculateWaitForRetry(retries, maximum_wait=GetMaxRetryDelay()))
+        time.sleep(CalculateWaitForRetry(retries, maximum_wait=GetMaxRetryDelay()))
         self.logger.info('Retrying download from byte %s after exception.' %
                          start_byte)
         apitools_http_wrapper.RebuildHttpConnections(
@@ -814,7 +815,7 @@ class GcsJsonApi(CloudApi):
                 raise ResumableUploadException(
                     'Transfer failed after %d retries. Final exception: %s' %
                     (self.num_retries, e2))
-              time.sleep(apitools_http_wrapper.CalculateWaitForRetry(retries, maximum_wait=GetMaxRetryDelay()))
+              time.sleep(CalculateWaitForRetry(retries, maximum_wait=GetMaxRetryDelay()))
           if start_byte > last_progress_byte:
             # We've made progress, so allow a fresh set of retries.
             last_progress_byte = start_byte
@@ -825,7 +826,7 @@ class GcsJsonApi(CloudApi):
               raise ResumableUploadException(
                   'Transfer failed after %d retries. Final exception: %s' %
                   (self.num_retries, e))
-            time.sleep(apitools_http_wrapper.CalculateWaitForRetry(retries, maximum_wait=GetMaxRetryDelay()))
+            time.sleep(CalculateWaitForRetry(retries, maximum_wait=GetMaxRetryDelay()))
           self.logger.info('Retrying upload from byte %s after exception.'
                            % start_byte)
     except TRANSLATABLE_APITOOLS_EXCEPTIONS, e:
