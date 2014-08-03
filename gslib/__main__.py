@@ -532,10 +532,17 @@ def _RunNamedCommandAndHandleExceptions(command_runner, command_name, args=None,
 # acl           compose       cors          defacl        hash          lifecycle     ls            mv            perfdiag      rm            setmeta       stat          update        versioning
 # cat           config        cp            du            help          logging       mb            notification  rb            rsync         signurl       test          version       web
 
+# !!!--help?       !!!chacl         configure        del              disablelogging   getlogging       lifecycleconfig  mb               notification     performance      removebuckets    setacl           setwebcfg        ver
+# !!!-h            !!!chdefacl      copy             delete           du               getversioning    list             md               notifications    queryauth        ren              setcors          signedurl        version
+# !!!?             compose          cors             deletebucket     enablelogging    getwebcfg        logging          mkdir            notify           rb               rename           setdefacl        signurl          versioning
+# acl              concat           cp               diag             getacl           hash             ls               move             notifyconfig     refresh          rm               setheader        stat             web
+# cat              conf             createbucket     diagnostic       getcors          help             makebucket       mv               perf             remove           rmdir            setmeta          test
+# cfg              config           defacl           dir              getdefacl        lifecycle        man              notif            perfdiag         removebucket     rsync            setversioning    update
+
 def _PerformTabCompletion(command_runner):
   import argcomplete
   import argparse
-  parser = argparse.ArgumentParser()
+  parser = argparse.ArgumentParser(add_help=False)
   subparses = parser.add_subparsers()
   for command_name in command_runner.GetAvailableCommandNames():
     subparses.add_parser(command_name)
