@@ -306,6 +306,10 @@ def main():
             'Unsetting http_proxy environment variable within gsutil run.\n')
       del os.environ['http_proxy']
 
+    if os.environ.get('_ARGCOMPLETE', '0') == '1':
+      return _PerformTabCompletion(command_runner)
+
+
     return _RunNamedCommandAndHandleExceptions(
         command_runner, command_name, args=args[1:], headers=headers,
         debug_level=debug, parallel_operations=parallel_operations)
@@ -525,6 +529,22 @@ def _RunNamedCommandAndHandleExceptions(command_runner, command_name, args=None,
           % GetConfigFilePath())
     _HandleUnknownFailure(e)
 
+# acl           compose       cors          defacl        hash          lifecycle     ls            mv            perfdiag      rm            setmeta       stat          update        versioning
+# cat           config        cp            du            help          logging       mb            notification  rb            rsync         signurl       test          version       web
+
+def _PerformTabCompletion(command_runner):
+  import argcomplete
+  import argparse
+  parser = argparse.ArgumentParser()
+  subparses = parser.add_subparsers()
+  for command_name in command_runner.GetAvailableCommandNames():
+    subparses.add_parser(command_name)
+  argcomplete.autocomplete(parser, exit_method=sys.exit)
+
+  return 0
+
+import faulthandler, signal
+faulthandler.register(signal.SIGUSR1)
 
 if __name__ == '__main__':
   sys.exit(main())

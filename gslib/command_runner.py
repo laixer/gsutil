@@ -120,6 +120,9 @@ class CommandRunner(object):
         command_map[command_name_aliases] = command
     return command_map
 
+  def GetAvailableCommandNames(self):
+    return self.command_map.keys()
+
   def RunNamedCommand(self, command_name, args=None, headers=None, debug=0,
                       parallel_operations=False, test_method=None,
                       skip_update_check=False, logging_filters=None,
