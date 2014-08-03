@@ -972,23 +972,3 @@ def GetTermLines():
   if not ioc:
     ioc = os.environ.get('LINES', _DEFAULT_LINES)
   return int(ioc)
-
-
-def CalculateWaitForRetry(retry_attempt, max_wait=60):
-  """Calculates amount of time to wait before a retry attempt.
-
-  Wait time grows exponentially with the number of attempts.
-  A random amount of jitter is added to spread out retry attempts from different
-  clients.
-
-  Args:
-    retry_attempt: Retry attempt counter.
-    max_wait: Upper bound for wait time.
-
-  Returns:
-    Amount of time to wait before retrying request.
-  """
-
-  wait_time = 2 ** retry_attempt
-  max_jitter = (2 ** retry_attempt) / 2
-  return min(wait_time + random.randrange(-max_jitter, max_jitter), max_wait)
