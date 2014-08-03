@@ -19,7 +19,6 @@ import math
 import multiprocessing
 import os
 import pkgutil
-import random
 import re
 import struct
 import sys
