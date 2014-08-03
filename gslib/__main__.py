@@ -540,6 +540,8 @@ def _RunNamedCommandAndHandleExceptions(command_runner, command_name, args=None,
 # cfg              config           defacl           dir              getdefacl        lifecycle        man              notif            perfdiag         removebucket     rsync            setversioning    update
 
 def _PerformTabCompletion(command_runner):
+  # TODO: Should we disable multiprocessing?
+  # TODO: Which options to include in command list?
   import argcomplete
   import argparse
   parser = argparse.ArgumentParser(add_help=False)
