@@ -42,11 +42,10 @@ PARALLEL_COMPOSITE_UPLOAD_TEST_CONFIG = '/tmp/.boto.parallel_upload_test_config'
 
 
 def _HasS3Credentials():
-  return False
-  # provider = Provider('aws')
-  # if not provider.access_key or not provider.secret_key:
-  #   return False
-  # return True
+  provider = Provider('aws')
+  if not provider.access_key or not provider.secret_key:
+    return False
+  return True
 
 HAS_S3_CREDS = _HasS3Credentials()
 
