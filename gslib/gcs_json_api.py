@@ -55,7 +55,7 @@ from gslib.third_party.storage_apitools import http_wrapper as apitools_http_wra
 from gslib.third_party.storage_apitools import storage_v1_client as apitools_client
 from gslib.third_party.storage_apitools import storage_v1_messages as apitools_messages
 from gslib.third_party.storage_apitools import transfer as apitools_transfer
-from gslib.third_party.storage_apitools import util as apitools_util
+from gslib.third_party.storage_apitools.util import CalculateWaitForRetry
 from gslib.translation_helper import CreateBucketNotFoundException
 from gslib.translation_helper import CreateObjectNotFoundException
 from gslib.translation_helper import DEFAULT_CONTENT_TYPE
@@ -599,7 +599,7 @@ class GcsJsonApi(CloudApi):
           raise ResumableDownloadException(
               'Transfer failed after %d retries. Final exception: %s' %
               self.num_retries, str(e))
-        time.sleep(apitools_util.CalculateWaitForRetry(
+        time.sleep(CalculateWaitForRetry(
             retries, max_wait=GetMaxRetryDelay()))
         self.logger.info('Retrying download from byte %s after exception.' %
                          start_byte)
@@ -816,7 +816,7 @@ class GcsJsonApi(CloudApi):
                 raise ResumableUploadException(
                     'Transfer failed after %d retries. Final exception: %s' %
                     (self.num_retries, e2))
-              time.sleep(apitools_util.CalculateWaitForRetry(
+              time.sleep(CalculateWaitForRetry(
                   retries, max_wait=GetMaxRetryDelay()))
           if start_byte > last_progress_byte:
             # We've made progress, so allow a fresh set of retries.
@@ -828,7 +828,7 @@ class GcsJsonApi(CloudApi):
               raise ResumableUploadException(
                   'Transfer failed after %d retries. Final exception: %s' %
                   (self.num_retries, e))
-            time.sleep(apitools_util.CalculateWaitForRetry(
+            time.sleep(CalculateWaitForRetry(
                 retries, max_wait=GetMaxRetryDelay()))
           self.logger.info('Retrying upload from byte %s after exception.'
                            % start_byte)
