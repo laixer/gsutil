@@ -816,7 +816,7 @@ class GcsJsonApi(CloudApi):
                     'Transfer failed after %d retries. Final exception: %s' %
                     (self.num_retries, e2))
               time.sleep(
-                CalculateWaitForRetry(retries, max_wait=GetMaxRetryDelay()))
+                  CalculateWaitForRetry(retries, max_wait=GetMaxRetryDelay()))
           if start_byte > last_progress_byte:
             # We've made progress, so allow a fresh set of retries.
             last_progress_byte = start_byte
@@ -828,7 +828,7 @@ class GcsJsonApi(CloudApi):
                   'Transfer failed after %d retries. Final exception: %s' %
                   (self.num_retries, e))
             time.sleep(
-              CalculateWaitForRetry(retries, max_wait=GetMaxRetryDelay()))
+                CalculateWaitForRetry(retries, max_wait=GetMaxRetryDelay()))
           self.logger.info('Retrying upload from byte %s after exception.'
                            % start_byte)
     except TRANSLATABLE_APITOOLS_EXCEPTIONS, e:
